@@ -40,7 +40,7 @@ Find the correct Reveille's signature by verifying the signature of the message 
 Use a method similar to **part b** to find which key is used to sign the message`rev.txt`.
 
 ## PyCryptodome
-We need pycryptodome to run this program. To install pycryptodome in Python 3, type:
+We need pycryptodome to run this program. If not installed, to install pycryptodome in Python 3, type:
 ```
 make install
 ```
