@@ -9,7 +9,7 @@ def find_decrypt_key(message, dir="key_pairs/"):
     # iterate through all the keys in the directory
     for file in os.listdir(dir):
         # TODO: what type of key should we filter out?
-        if not file.endswith("pub.pem"): 
+        if not file.endswith("priv.pem"): 
             continue # skip to the next file
         elif decrypt_message(message, dir + file, "temp.txt"): # if the decryption is successful
             os.remove("temp.txt") # remove the temporary file
@@ -18,7 +18,12 @@ def find_decrypt_key(message, dir="key_pairs/"):
 def find_sign_key(message, signature, dir="key_pairs/"):
     # [IMPLEMENT THIS FUNCTION TO RETURN THE PATH TOWARDS THE PUBLIC KEY]
     # TODO
-    pass # remove this line when you implement the function
+   for file in os.listdir(dir):
+        # TODO: what type of key should we filter out?
+        if not file.endswith("pub.pem"): 
+            continue # skip to the next file
+        elif verify_message(message, signature, dir + file): # if the decryption is successful
+            return dir + file # return the signature key file path
 
 # ======== main functions ========
 # Generate a public/private key pair using 2048 bits key length
@@ -29,7 +34,6 @@ def generate_keys(public_fname="public.pem", private_fname="private.pem"):
     # ======= public key =======
     # TODO: extract the public key
     pub = key.publickey()
-
 
     # TODO: save the public key in a file called public.pem
     pub_pem = pub.export_key(format='PEM')
@@ -173,6 +177,9 @@ if __name__ == "__main__":
             #         HINT: use the find_decrypt_key function to your advantage
             message = open("sus.txt", "rb").read()
             # TODO
+            correct_key_path = find_decrypt_key(message)
+            decrypt_message(message, correct_key_path, "sus_decrypted.txt")
+
 
         elif option == "c":
             # part c.1: sign a message using the private key from part a.1
@@ -203,6 +210,8 @@ if __name__ == "__main__":
             message = open("sus_decrypted.txt", "rb").read()
             signature = open("rev.txt", "rb").read()
             # TODO
+            correct_key_path = find_sign_key(message, signature)
+            print("The correct path is: " + correct_key_path)
             
         elif option == "q":
             break
